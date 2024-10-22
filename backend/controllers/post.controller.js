@@ -7,7 +7,7 @@ export const getFeedPosts = async (req, res) => {
     try {
 
         const posts = await Post.find({
-            author: { $in: req.user.connections }
+            author: { $in: [...req.user.connections, , req.user._id] }
         }).populate(
             "author", "name username profilePicture headline"
         ).populate(
@@ -16,7 +16,7 @@ export const getFeedPosts = async (req, res) => {
             createdAt: -1
         })
 
-        res.status(200).json({ posts })
+        res.status(200).json(posts)
 
     } catch (error) {
         console.log("Error in getFeedPost controller: ", error);
@@ -31,12 +31,13 @@ export const createPost = async (req, res) => {
         let newPost;
 
         if (image) {
-            const imgResult = cloudinary.uploader.upload(image);
+            const imgResult = await cloudinary.uploader.upload(image);
             newPost = new Post({
                 author: req.user._id,
+                image: imgResult.secure_url,
                 content,
-                image: imgResult.secure_url
             })
+
         } else {
             newPost = new Post({
                 author: req.user._id,
@@ -158,7 +159,7 @@ export const likePost = async (req, res) => {
         const postId = req.params.id;
         const userId = req.user._id;
         const post = await Post.findById(postId);
-        
+
 
         if (post.likes.includes(userId)) {
             // unlike the post
