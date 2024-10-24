@@ -27,7 +27,7 @@ const RecommendedUser = ({ user }) => {
 		mutationFn: (requestId) => axiosInstance.put(`/connections/accept/${requestId}`),
 		onSuccess: () => {
 			toast.success("Connection request accepted");
-			queryClient.invalidateQueries({ queryKey: ["connectionStatus", user._id] });
+			// queryClient.invalidateQueries({ queryKey: ["connectionStatus", user._id] });
 		},
 		onError: (error) => {
 			toast.error(error.response?.data?.error || "An error occurred");

@@ -129,7 +129,7 @@ export const createComment = async (req, res) => {
         if (post.author._id.toString() !== req.user._id.toString()) {
             const newNotification = new Notification({
                 recipient: post.author._id,
-                type: "COMMENT",
+                type: "comment",
                 relatedUser: req.user._id,
                 relatedPost: postId,
             })
@@ -178,7 +178,7 @@ export const likePost = async (req, res) => {
 
                 const newNotification = new Notification({
                     recipient: post.author,
-                    type: "LIKE",
+                    type: "like",
                     relatedUser: userId,
                     relatedPost: postId,
                 })

@@ -43,6 +43,7 @@ const Navbar = () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
+ 
 
   const unreadNotificationCount = notifications?.filter(
     (notification) => !notification.read
