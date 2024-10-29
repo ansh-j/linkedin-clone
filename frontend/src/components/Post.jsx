@@ -2,7 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+
+} from "react-router-dom";
 import {
   Loader,
   MessageCircle,
@@ -16,7 +20,7 @@ import { formatDistanceToNow } from "date-fns";
 import PostAction from "./PostAction";
 
 const Post = ({ post }) => {
-  const { postId } = useParams();
+  // const { postId } = useParams();
 
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const [showComments, setShowComments] = useState(false);
@@ -24,7 +28,7 @@ const Post = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const isOwner = authUser._id === post.author._id;
   const isLiked = post.likes.includes(authUser._id);
-
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate: deletePost, isPending: isDeletingPost } = useMutation({
@@ -33,7 +37,9 @@ const Post = ({ post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["post", post._id] });
       toast.success("Post deleted successfully");
+      navigate("/", { replace: true });
     },
     onError: (error) => {
       toast.error(error.message);
@@ -48,6 +54,7 @@ const Post = ({ post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["post", post._id] });
       toast.success("Comment added successfully");
     },
     onError: (err) => {
@@ -61,7 +68,7 @@ const Post = ({ post }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["post",post._id] });
     },
   });
 
@@ -79,7 +86,6 @@ const Post = ({ post }) => {
     e.preventDefault();
     if (newComment.trim()) {
       createComment(newComment);
-      setNewComment("");
       setComments([
         ...comments,
         {
@@ -92,6 +98,7 @@ const Post = ({ post }) => {
           createdAt: new Date(),
         },
       ]);
+      setNewComment("");
     }
   };
 
