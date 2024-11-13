@@ -2,6 +2,7 @@ import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
 import {
 	acceptConnectionRequest,
+	getConnection,
 	getConnectionRequests,
 	getConnectionStatus,
 	getUserConnections,
@@ -23,5 +24,6 @@ router.get("/requests", protectRoute, getConnectionRequests);
 router.get("/", protectRoute, getUserConnections);
 router.delete("/:userId", protectRoute, removeConnection);
 router.get("/status/:userId", protectRoute, getConnectionStatus);
+router.get("/connection/:username", protectRoute, getConnection)
 
 export default router;

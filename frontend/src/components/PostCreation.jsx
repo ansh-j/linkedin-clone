@@ -79,7 +79,7 @@ const PostCreation = ({ user }) => {
           className="w-full p-3 rounded-lg bg-base-100 hover:bg-base-200 focus:bg-base-200 focus:outline-none resize-none transition-colors duration-200 min-h-[100px]"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-        />
+        />  
       </div>
 
       {imagePreview && (

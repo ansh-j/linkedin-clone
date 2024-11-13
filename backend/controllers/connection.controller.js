@@ -199,3 +199,17 @@ export const getConnectionStatus = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+export const getConnection = async (req, res) => {
+	try {
+		const myId = req.user._id;
+        const { username } = req.params;
+		
+		const users = await User.find({ username: new RegExp(username, 'i') });
+		res.status(200).json(users)
+
+	} catch (error) {
+		console.error("Error in getConnectionStatus controller:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+}

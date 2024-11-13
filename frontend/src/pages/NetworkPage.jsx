@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { UserPlus } from "lucide-react";
 import FriendRequest from "../components/FriendRequest";
 import UserCard from "../components/UserCard";
+import SearchBar from "../components/SearchBar";
 
 const NetworkPage = () => {
 	const { data: user } = useQuery({ queryKey: ["authUser"] });
@@ -23,6 +24,9 @@ const NetworkPage = () => {
 				<Sidebar user={user} />
 			</div>
 			<div className='col-span-1 lg:col-span-3'>
+				<div className="bg-secondary rounded-lg shadow p-6 mb-6">
+					<SearchBar/>
+				</div>
 				<div className='bg-secondary rounded-lg shadow p-6 mb-6'>
 					<h1 className='text-2xl font-bold mb-6'>My Network</h1>
 
